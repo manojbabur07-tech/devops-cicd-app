@@ -10,6 +10,8 @@ public class App {
         System.out.println(" Application: Java Maven App");
         System.out.println(" Build Tool: Maven");
         System.out.println(" Deployment: Jenkins Pipeline");
+        System.out.println(" Environment: Development");
+        System.out.println(" Version: 1.1");
         System.out.println("================================");
 
     }
