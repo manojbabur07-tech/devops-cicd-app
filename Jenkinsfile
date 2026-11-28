@@ -1,13 +1,16 @@
+
 pipeline {
     agent any
 
     tools {
+        jdk 'JDK17'
         maven 'Maven3'
     }
 
     options {
         timestamps()
         disableConcurrentBuilds()
+        skipDefaultCheckout(true)
     }
 
     stages {
@@ -19,29 +22,38 @@ pipeline {
             }
         }
 
+        stage('Verify Java and Maven') {
+            steps {
+                echo 'Checking Java and Maven versions'
+                sh 'java -version'
+                sh 'mvn -version'
+            }
+        }
+
         stage('Build') {
             steps {
                 echo 'Compiling Java application'
-                sh 'mvn clean compile'
+                sh 'mvn -B clean compile'
             }
         }
 
         stage('Unit Testing') {
             steps {
                 echo 'Executing unit tests'
-                sh 'mvn test'
+                sh 'mvn -B test'
             }
         }
 
         stage('Package') {
             steps {
                 echo 'Generating application JAR'
-                sh 'mvn package'
+                sh 'mvn -B package'
             }
         }
 
         stage('Archive Artifact') {
             steps {
+                echo 'Archiving generated JAR'
                 archiveArtifacts artifacts: 'target/*.jar',
                                  fingerprint: true
             }
